@@ -10,20 +10,21 @@ let methods = {
       if (!cloudStorageType) throw "No cloud storage type found !";
 
       //   console.log("file is --->", file);
-
+      var uploadFile;
       if (cloudStorageType.toLowerCase() == "cloudinary") {
-        let uploadFile = await utils.uploadFileToCloudinary(file[0]);
+        uploadFile = await utils.uploadFileToCloudinary(file[0]);
       }
 
       if (cloudStorageType.toLowerCase() == "amazonbucket") {
-        let uploadFile = utils.uploadFileToS3(file);
+        uploadFile = utils.uploadFileToS3(file);
       }
       if (cloudStorageType.toLowerCase() == "ftps") {
-        let uploadFile = utils.uploadFileToFtp();
+        uploadFile = utils.uploadFileToFtp();
       }
 
       res.status(200).json({
         msg: "file uplaoded succsessfully !",
+        result: uploadFile,
       });
     } catch (error) {
       console.log("error --> ", error);

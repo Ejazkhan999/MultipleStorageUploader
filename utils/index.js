@@ -14,7 +14,7 @@ let methods = {
 
   uploadFileToS3: () => {},
 
-  uploadFileToCloudinary: (file) => {
+  uploadFileToCloudinaryToBedeleted: (file) => {
     let fileExtension = file.mimetype.split("/").pop();
 
     fileExtension = fileExtension.toUpperCase();
@@ -52,6 +52,61 @@ let methods = {
 
     if (fileType === "Other") {
     }
+  },
+
+  uploadFileToCloudinary: async (file) => {
+    return new Promise((resolve, reject) => {
+      let fileExtension = file.mimetype.split("/").pop();
+
+      fileExtension = fileExtension.toUpperCase();
+
+      let fileType = methods.findFileType(fileExtension);
+
+      if (fileType === "Image") {
+        //   console.log("fileis -->", file);
+        console.log("file type is image ");
+        var CloudinaryObj = methods.configCloudinary();
+        CloudinaryObj.uploader
+          .upload(file.filepath)
+          .then((result) => {
+            return resolve(result.secure_url);
+          })
+          .catch((err) => {
+            return reject(err);
+            // console.log(`error is ${err}`);
+          });
+      }
+      if (fileType === "Video") {
+        //   console.log("fileis -->", file);
+        console.log("file type is video ");
+        var CloudinaryObj = methods.configCloudinary();
+        CloudinaryObj.uploader
+          .upload(file.filepath, { resource_type: "video" })
+          .then((result) => {
+            return resolve(result.secure_url);
+          })
+          .catch((err) => {
+            return reject(err);
+            // console.log(`error is ${err}`);
+          });
+      }
+
+      if (fileType === "Other") {
+        console.log("file path is ", file);
+        filePath = file.filepath + ".txt";
+        console.log("file type is video ");
+        var CloudinaryObj = methods.configCloudinary();
+        CloudinaryObj.uploader
+          .upload(file.originalFilename, { resource_type: "raw" })
+          .then((result) => {
+            return resolve(result.secure_url);
+          })
+          .catch((err) => {
+            return reject(err);
+            // console.log(`error is ${err}`);
+          });
+      }
+    });
   },
 
   uploadFileToFtp: () => {},
