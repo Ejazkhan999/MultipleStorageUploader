@@ -156,22 +156,6 @@ let methods = {
 
   //Cloudinary multiple files uplaod
 
-  uploadImageToCloudinaryStorage: async (file) => {
-    cloudinary.uploader
-      .upload(file)
-      .then((result) => console.log(`result is `, result))
-      .catch((err) => {
-        for (var i in err) {
-          console.log("error is ", err[i]);
-        }
-        // console.log(`error is ${err}`);
-      });
-  },
-
-  uploadVideoToCloudinaryStorage: async () => {},
-
-  uplaodOtherFileToCloudinaryStorage: async () => {},
-
   attachBodyAndFiles: (req, res, next) => {
     console.log("Attach File Function Called");
     let form = new formidable.IncomingForm();
